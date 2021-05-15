@@ -1,3 +1,3 @@
-module github.com/bilginyuksel/golidator
+module github.com/bilginyuksel/gorify
 
 go 1.15

@@ -1,4 +1,4 @@
-package golidator
+package gorify
 
 import (
 	"encoding/json"
@@ -133,6 +133,8 @@ func init() {
 	NewValidator(String, setDefault)
 
 	NewIntValidator(between)
+
+	NewValidator(Time, setDefaultTime)
 }
 
 func NewIntValidator(fun FuncValidateInt) {

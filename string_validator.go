@@ -1,4 +1,4 @@
-package golidator
+package gorify
 
 import (
 	"errors"
