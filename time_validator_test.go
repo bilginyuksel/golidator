@@ -6,7 +6,7 @@ import (
 )
 
 type TestTime struct {
-	T time.Time `default:"now,add-d9,utc,round"`
+	T time.Time `default:"now,add-9h,utc,round"`
 }
 
 func TestTimeDefault_now(t *testing.T) {
