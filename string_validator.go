@@ -3,7 +3,6 @@ package gorify
 import (
 	"errors"
 	"fmt"
-	"log"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -36,8 +35,7 @@ var (
 
 		regExp, err := regexp.Compile(pattern)
 		if err != nil {
-			log.Printf("regular expression could not compiled, err: %v\n", err)
-			return err
+			return errors.New(fmt.Sprintf("regular expression could not compiled, err: %v", err))
 		}
 
 		if !regExp.MatchString(value) {

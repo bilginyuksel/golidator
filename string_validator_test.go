@@ -1,7 +1,6 @@
 package gorify
 
 import (
-	"log"
 	"testing"
 )
 
@@ -72,7 +71,6 @@ func TestValidation_StringField(t *testing.T) {
 			if err := Validate(tC.st); err != nil && tC.expected {
 				t.Errorf("failed, err: %v\n", err)
 			}
-			log.Println(tC.st.Firstname)
 		})
 	}
 }

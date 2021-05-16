@@ -2,7 +2,6 @@ package gorify
 
 import (
 	"errors"
-	"log"
 	"reflect"
 	"strconv"
 	"strings"
@@ -33,7 +32,6 @@ var (
 			// and also for struct types it is more efficient to transfer data in byte format
 			// intVal, _ := strconv.Atoi(value)
 			if min > value || max < value {
-				log.Printf("min: %d, max: %d, value: %d\n", min, max, value)
 				return errors.New(betweenValueIsNotInRange)
 			}
 		}
