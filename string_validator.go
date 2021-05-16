@@ -71,6 +71,37 @@ var (
 		return nil
 	}
 
+	minLength = func(value string, tags reflect.StructTag) error {
+		if strMinLength, exists := tags.Lookup("min"); exists {
+			min, err := strconv.Atoi(strMinLength)
+
+			if err != nil {
+				return errors.New("min length should be int")
+			}
+
+			if len(value) < min {
+				return errors.New("value length is smaller than min constraint")
+			}
+		}
+
+		return nil
+	}
+
+	maxLength = func(value string, tags reflect.StructTag) error {
+		if strMaxLength, exists := tags.Lookup("max"); exists {
+			max, err := strconv.Atoi(strMaxLength)
+
+			if err != nil {
+				return errors.New("max length should be int")
+			}
+
+			if len(value) > max {
+				return errors.New("value length is bigger than max constraint")
+			}
+		}
+		return nil
+	}
+
 	lengthEqual = func(value string, tags reflect.StructTag) error {
 		if strSize, exists := tags.Lookup("size"); exists {
 			size, err := strconv.Atoi(strSize)

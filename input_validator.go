@@ -130,6 +130,8 @@ func init() {
 	NewStringValidator(lengthBetween)
 	NewStringValidator(notBlank)
 	NewStringValidator(lengthEqual)
+	NewStringValidator(maxLength)
+	NewStringValidator(minLength)
 	NewValidator(String, setDefault)
 
 	NewIntValidator(between)
