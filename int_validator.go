@@ -2,6 +2,7 @@ package gorify
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
@@ -33,6 +34,36 @@ var (
 			// intVal, _ := strconv.Atoi(value)
 			if min > value || max < value {
 				return errors.New(betweenValueIsNotInRange)
+			}
+		}
+		return nil
+	}
+
+	minInt = func(value int, tags reflect.StructTag) error {
+		if minIntStr, ok := tags.Lookup("min"); ok {
+			min, err := strconv.Atoi(minIntStr)
+
+			if err != nil {
+				return errors.New("min tag value should be integer.")
+			}
+
+			if min > value {
+				return errors.New(fmt.Sprintf("value should be bigger than min: %d", min))
+			}
+		}
+		return nil
+	}
+
+	maxInt = func(value int, tags reflect.StructTag) error {
+		if maxIntStr, ok := tags.Lookup("max"); ok {
+			max, err := strconv.Atoi(maxIntStr)
+
+			if err != nil {
+				return errors.New("max tag value should be integer")
+			}
+
+			if max < value {
+				return errors.New(fmt.Sprintf("value should be lower than max: %d", max))
 			}
 		}
 		return nil

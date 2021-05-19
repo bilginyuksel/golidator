@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	emailRegExp                  = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
 	notBlankErr                  = "the string is blank"
 	regExpMatchErr               = "value: %v, does not match with the pattern"
 	betweenStrLengthIsNotInRange = "given string is not in range between the numbers in tag"
@@ -42,6 +43,25 @@ var (
 			return errors.New(fmt.Sprintf(regExpMatchErr, value))
 		}
 
+		return nil
+	}
+
+	emailStringField = func(value string, tags reflect.StructTag) error {
+		if _, ok := tags.Lookup("email"); ok {
+			regExp, _ := regexp.Compile(emailRegExp)
+			if !regExp.MatchString(value) {
+				return errors.New("the value is not an email.")
+			}
+		}
+		return nil
+	}
+
+	containsString = func(value string, tags reflect.StructTag) error {
+		if containsStr, ok := tags.Lookup("contains"); ok {
+			if !strings.Contains(value, containsStr) {
+				return errors.New("string does not contain, " + containsStr)
+			}
+		}
 		return nil
 	}
 

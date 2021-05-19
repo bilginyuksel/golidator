@@ -126,16 +126,23 @@ func NewKind(fullKindName string, customKind Kind) {
 }
 
 func init() {
+	// Default String validators
 	NewStringValidator(matchesRegExp)
 	NewStringValidator(lengthBetween)
 	NewStringValidator(notBlank)
 	NewStringValidator(lengthEqual)
 	NewStringValidator(maxLength)
 	NewStringValidator(minLength)
+	NewStringValidator(emailStringField)
+	NewStringValidator(containsString)
 	NewValidator(String, setDefault)
 
+	// Default int validators
 	NewIntValidator(between)
+	NewIntValidator(maxInt)
+	NewIntValidator(minInt)
 
+	// Default time validators
 	NewValidator(Time, setDefaultTime)
 }
 
