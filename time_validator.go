@@ -40,6 +40,46 @@ var (
 
 		return errors.New("could not set default value to time")
 	}
+
+	betweenTimeRange = func(value time.Time, tags reflect.StructTag) error {
+		if timeBetweenStr, ok := tags.Lookup("between"); ok {
+			splittedTimeBetween := strings.Split(timeBetweenStr, ",")
+			startTimeDate := parseTimeAddDate(splittedTimeBetween[0])
+			endTimeDate := parseTimeAddDate(splittedTimeBetween[1])
+
+			startTime := time.Time{}.AddDate(startTimeDate.date())
+			endTime := time.Time{}.AddDate(endTimeDate.date())
+
+			if value.Before(startTime) || value.After(endTime) {
+				return errors.New("given time is not between the constraint times")
+			}
+		}
+		return nil
+	}
+
+	afterTimeRange = func(value time.Time, tags reflect.StructTag) error {
+		if afterTimeStr, ok := tags.Lookup("after"); ok {
+			afterTimeDate := parseTimeAddDate(afterTimeStr)
+			afterTime := time.Time{}.AddDate(afterTimeDate.date())
+
+			if value.Before(afterTime) {
+				return errors.New("given type is not after the constrainted after time")
+			}
+		}
+		return nil
+	}
+
+	beforeTimeRange = func(value time.Time, tags reflect.StructTag) error {
+		if beforeTimeStr, ok := tags.Lookup("before"); ok {
+			beforeTimeDate := parseTimeAddDate(beforeTimeStr)
+			beforeTime := time.Time{}.AddDate(beforeTimeDate.date())
+
+			if value.After(beforeTime) {
+				return errors.New("given type is not before the constrainted before time")
+			}
+		}
+		return nil
+	}
 )
 
 var (
@@ -221,6 +261,8 @@ func contains(stts []string, str string) bool {
 	return false
 }
 
+// parseTimeAddDate convert string to timeAddDate
+// format 2020y10m10d order does not matter
 func parseTimeAddDate(str string) timeAddDate {
 	var (
 		curr  = "0"

@@ -68,4 +68,8 @@ var (
 		}
 		return nil
 	}
+
+	setDefaultInt = func(reflectField reflect.StructField, reflectValue reflect.Value) error {
+		return setDefaultInt64(reflectField, reflectValue)
+	}
 )

@@ -141,8 +141,18 @@ func init() {
 	NewIntValidator(between)
 	NewIntValidator(maxInt)
 	NewIntValidator(minInt)
+	NewValidator(Int, setDefaultInt)
+
+	// Default int64 validators
+	NewInt64Validator(betweenInt64)
+	NewInt64Validator(maxInt64)
+	NewInt64Validator(minInt64)
+	NewValidator(Int64, setDefaultInt64)
 
 	// Default time validators
+	NewTimeValidator(betweenTimeRange)
+	NewTimeValidator(beforeTimeRange)
+	NewTimeValidator(afterTimeRange)
 	NewValidator(Time, setDefaultTime)
 }
 
