@@ -7,6 +7,10 @@ type IntStruct struct {
 	Age       int `json:"age" between:"20-100"`
 }
 
+type IntSetDefault struct {
+	AgeLimit int `default:"80"`
+}
+
 func TestValidation_IntField(t *testing.T) {
 	testCases := []struct {
 		scenario string
@@ -55,5 +59,17 @@ func TestValidation_IntField(t *testing.T) {
 				t.Errorf("failed, err: %v", err)
 			}
 		})
+	}
+}
+
+func TestIntValidation_SetDefaultValue(t *testing.T) {
+	testObj := &IntSetDefault{}
+	t.Logf("test obj before validation: %v", testObj)
+	if err := Validate(testObj); err != nil {
+		t.Errorf("validation gives an error, but it shouldn't")
+	}
+	t.Logf("test obj after validation: %v", testObj)
+	if testObj.AgeLimit != 80 {
+		t.Errorf("default value could not set successfully")
 	}
 }

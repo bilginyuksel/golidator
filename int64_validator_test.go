@@ -7,6 +7,10 @@ type Int64Struct struct {
 	Timestamp       int64 `min:"55100" max:"128345"`
 }
 
+type Int64SetDefault struct {
+	FileSizeLimitBytes int64 `default:"24654118912"`
+}
+
 func TestInt64Validation(t *testing.T) {
 	testCases := []struct {
 		desc     string
@@ -41,5 +45,17 @@ func TestInt64Validation(t *testing.T) {
 				t.Errorf("failed, err: %v", err)
 			}
 		})
+	}
+}
+
+func TestInt64Validation_SetDefaultValue(t *testing.T) {
+	testObj := &Int64SetDefault{}
+	t.Logf("test obj before validation: %v", testObj)
+	if err := Validate(testObj); err != nil {
+		t.Errorf("validation gives an error, but it shouldn't")
+	}
+	t.Logf("test obj after validation: %v", testObj)
+	if testObj.FileSizeLimitBytes != 24654118912 {
+		t.Errorf("default value could not set successfully")
 	}
 }
