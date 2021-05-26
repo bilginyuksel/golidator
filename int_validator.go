@@ -1,17 +1,9 @@
 package gorify
 
 import (
-	"errors"
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
-)
-
-const (
-	betweenElemCountErr      = "between tag should contains floor and ceil values seperated by '-'"
-	betweenElemNoIntErr      = "between elements should be int"
-	betweenValueIsNotInRange = "given value is not between the range"
 )
 
 var (
@@ -19,21 +11,17 @@ var (
 		if betweenStr, ok := tags.Lookup("between"); ok {
 			minMaxSplitted := strings.Split(betweenStr, "-")
 			if len(minMaxSplitted) != 2 {
-				return errors.New(betweenElemCountErr)
+				panic("min and max should be separated by '-'")
 			}
 			min, err := strconv.Atoi(minMaxSplitted[0])
 			max, err := strconv.Atoi(minMaxSplitted[1])
 
 			if err != nil {
-				return errors.New(betweenElemNoIntErr)
+				panic("min and max values should be integer")
 			}
 
-			// value should be converted to int automatically
-			// maybe we can send data as byte array too. Because it is simplistic
-			// and also for struct types it is more efficient to transfer data in byte format
-			// intVal, _ := strconv.Atoi(value)
 			if min > value || max < value {
-				return errors.New(betweenValueIsNotInRange)
+				return errorMappings["int-between"].(*GorifyErr).objects(value, min, max)
 			}
 		}
 		return nil
@@ -44,11 +32,11 @@ var (
 			min, err := strconv.Atoi(minIntStr)
 
 			if err != nil {
-				return errors.New("min tag value should be integer.")
+				panic("min value should be integer")
 			}
 
 			if min > value {
-				return errors.New(fmt.Sprintf("value should be bigger than min: %d", min))
+				return errorMappings["int-min"].(*GorifyErr).objects(value, min)
 			}
 		}
 		return nil
@@ -59,11 +47,11 @@ var (
 			max, err := strconv.Atoi(maxIntStr)
 
 			if err != nil {
-				return errors.New("max tag value should be integer")
+				panic("max value should be integer")
 			}
 
 			if max < value {
-				return errors.New(fmt.Sprintf("value should be lower than max: %d", max))
+				return errorMappings["int-max"].(*GorifyErr).objects(value, max)
 			}
 		}
 		return nil

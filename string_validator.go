@@ -24,7 +24,7 @@ var (
 			return nil
 		}
 
-		return errors.New(notBlankErr)
+		return errorMappings["string-blank"]
 	}
 
 	matchesRegExp = func(value string, tags reflect.StructTag) error {
@@ -36,11 +36,11 @@ var (
 
 		regExp, err := regexp.Compile(pattern)
 		if err != nil {
-			return errors.New(fmt.Sprintf("regular expression could not compiled, err: %v", err))
+			panic(fmt.Errorf("regular expression could not compiled, err: %v", err))
 		}
 
 		if !regExp.MatchString(value) {
-			return errors.New(fmt.Sprintf(regExpMatchErr, value))
+			return errorMappings["string-pattern"]
 		}
 
 		return nil
@@ -50,7 +50,7 @@ var (
 		if _, ok := tags.Lookup("email"); ok {
 			regExp, _ := regexp.Compile(emailRegExp)
 			if !regExp.MatchString(value) {
-				return errors.New("the value is not an email.")
+				return errorMappings["string-email"]
 			}
 		}
 		return nil
@@ -59,31 +59,27 @@ var (
 	containsString = func(value string, tags reflect.StructTag) error {
 		if containsStr, ok := tags.Lookup("contains"); ok {
 			if !strings.Contains(value, containsStr) {
-				return errors.New("string does not contain, " + containsStr)
+				return errorMappings["string-contains"].(*GorifyErr).objects(value, containsStr)
 			}
 		}
 		return nil
 	}
 
-	// Same with the int_validator between function
-	// the only difference is when you use between with string it compares the length
-	// but with int it compares the actual value
 	lengthBetween = func(value string, tags reflect.StructTag) error {
 		if lengthBetweenStr, ok := tags.Lookup("between"); ok {
 			minMaxSplitted := strings.Split(lengthBetweenStr, "-")
 			if len(minMaxSplitted) != 2 {
-				return errors.New(betweenElemCountErr)
+				panic("min and max values should be separated by '-'")
 			}
 			min, err := strconv.Atoi(minMaxSplitted[0])
 			max, err := strconv.Atoi(minMaxSplitted[1])
 
 			if err != nil {
-				return errors.New(betweenElemNoIntErr)
+				panic("min and max values should be integer")
 			}
 
 			if min > len(value) || max < len(value) {
-				// log.Printf("min: %d, max: %d, value_length: %d", min, max, len(value))
-				return errors.New(betweenStrLengthIsNotInRange)
+				return errorMappings["string-between"].(*GorifyErr).objects(min, max)
 			}
 		}
 		return nil
@@ -94,11 +90,11 @@ var (
 			min, err := strconv.Atoi(strMinLength)
 
 			if err != nil {
-				return errors.New("min length should be int")
+				panic("min length should be integer")
 			}
 
 			if len(value) < min {
-				return errors.New("value length is smaller than min constraint")
+				return errorMappings["string-min"].(*GorifyErr).objects(min)
 			}
 		}
 
@@ -110,11 +106,11 @@ var (
 			max, err := strconv.Atoi(strMaxLength)
 
 			if err != nil {
-				return errors.New("max length should be int")
+				panic("max length should be integer")
 			}
 
 			if len(value) > max {
-				return errors.New("value length is bigger than max constraint")
+				return errorMappings["string-max"].(*GorifyErr).objects(max)
 			}
 		}
 		return nil
@@ -125,11 +121,11 @@ var (
 			size, err := strconv.Atoi(strSize)
 
 			if err != nil {
-				return errors.New("value of the size should be int")
+				panic("size should be integer")
 			}
 
 			if len(value) != size {
-				return errors.New("value length is not equal to size")
+				return errorMappings["string-size"].(*GorifyErr).objects(size)
 			}
 		}
 		return nil

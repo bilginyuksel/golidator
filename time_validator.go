@@ -51,7 +51,7 @@ var (
 			endTime := time.Time{}.AddDate(endTimeDate.date())
 
 			if value.Before(startTime) || value.After(endTime) {
-				return errors.New("given time is not between the constraint times")
+				return errorMappings["time-between"].(*GorifyErr).objects(startTime, endTime)
 			}
 		}
 		return nil
@@ -63,7 +63,7 @@ var (
 			afterTime := time.Time{}.AddDate(afterTimeDate.date())
 
 			if value.Before(afterTime) {
-				return errors.New("given type is not after the constrainted after time")
+				return errorMappings["time-after"].(*GorifyErr).objects(afterTime)
 			}
 		}
 		return nil
@@ -75,7 +75,7 @@ var (
 			beforeTime := time.Time{}.AddDate(beforeTimeDate.date())
 
 			if value.After(beforeTime) {
-				return errors.New("given type is not before the constrainted before time")
+				return errorMappings["time-before"].(*GorifyErr).objects(beforeTime)
 			}
 		}
 		return nil

@@ -57,6 +57,8 @@ func TestValidation_IntField(t *testing.T) {
 		t.Run(tC.scenario, func(t *testing.T) {
 			if err := Validate(tC.is); err != nil && tC.expected {
 				t.Errorf("failed, err: %v", err)
+			} else {
+				t.Log(err)
 			}
 		})
 	}

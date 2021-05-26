@@ -6,26 +6,26 @@ import (
 )
 
 var errorMappings = map[string]error{
-	"int-between": newGorifyErr("int", "between", "given number: %v, should between min: %v, max: %v"),
-	"int-min":     newGorifyErr("int", "min", "given number: %v, should be greater than min: %v"),
-	"int-max":     newGorifyErr("int", "max", "given number: %v, should be lower than max: %v"),
+	"int-between": newGorifyErr("int", "between", "given number: {}, should between min: {}, max: {}"),
+	"int-min":     newGorifyErr("int", "min", "given number: {}, should be greater than min: {}"),
+	"int-max":     newGorifyErr("int", "max", "given number: {}, should be lower than max: {}"),
 
-	"int64-between": newGorifyErr("int64", "between", "given number: %v, should between min: %v, max: %v"),
-	"int64-min":     newGorifyErr("int64", "min", "given number: %v, should be greater than min: %v"),
-	"int64-max":     newGorifyErr("int64", "max", "given number: %v, should be lower than max: %v"),
+	"int64-between": newGorifyErr("int64", "between", "given number: {}, should between min: {}, max: {}"),
+	"int64-min":     newGorifyErr("int64", "min", "given number: {}, should be greater than min: {}"),
+	"int64-max":     newGorifyErr("int64", "max", "given number: {}, should be lower than max: {}"),
 
 	"string-blank":    newGorifyErr("string", "blank", "given string should not be blank"),
 	"string-pattern":  newGorifyErr("string", "pattern", "given string did not match with the regexp pattern"),
 	"string-email":    newGorifyErr("string", "email", "given string is not an email"),
-	"string-contains": newGorifyErr("string", "contains", "given string %v, does not contain %v"),
-	"string-between":  newGorifyErr("string", "between", "given string length should between min: %d, max: %d"),
-	"string-min":      newGorifyErr("string", "min", "given string length should be greater than min: %d"),
-	"string-max":      newGorifyErr("string", "max", "given string length should be smaller than max: %d"),
-	"string-size":     newGorifyErr("string", "max", "given string size should be equal to size: %d"),
+	"string-contains": newGorifyErr("string", "contains", "given string {}, does not contain {}"),
+	"string-between":  newGorifyErr("string", "between", "given string length should between min: {}, max: {}"),
+	"string-min":      newGorifyErr("string", "min", "given string length should be greater than min: {}"),
+	"string-max":      newGorifyErr("string", "max", "given string length should be smaller than max: {}"),
+	"string-size":     newGorifyErr("string", "size", "given string size should be equal to size: {}"),
 
-	"time-between": newGorifyErr("time", "between", "given time should between %v and %v"),
-	"time-after":   newGorifyErr("time", "after", "given time should before %v"),
-	"time-before":  newGorifyErr("time", "before", "given time should after %v"),
+	"time-between": newGorifyErr("time", "between", "given time should between {} and {}"),
+	"time-after":   newGorifyErr("time", "after", "given time should before {}"),
+	"time-before":  newGorifyErr("time", "before", "given time should after {}"),
 }
 
 type GorifyErr struct {
@@ -39,7 +39,7 @@ func (err *GorifyErr) Error() string {
 }
 
 func (err *GorifyErr) objects(obj ...interface{}) *GorifyErr {
-	err.Desc = fmt.Sprintf(err.Desc, obj...)
+	err.Desc = fmt.Sprintf(strings.Replace(err.Desc, "{}", "%v", -1), obj...)
 	return err
 }
 

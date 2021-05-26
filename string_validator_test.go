@@ -70,6 +70,8 @@ func TestValidation_StringField(t *testing.T) {
 			// if validate fails and expected is true then t.error
 			if err := Validate(tC.st); err != nil && tC.expected {
 				t.Errorf("failed, err: %v\n", err)
+			} else {
+				t.Log(err)
 			}
 		})
 	}
