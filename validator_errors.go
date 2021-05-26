@@ -6,26 +6,26 @@ import (
 )
 
 var errorMappings = map[string]error{
-	"int-between": newGorifyErr("int", "between", "the number: %v, should between min: %v, max: %v"),
-	"int-min":     newGorifyErr("int", "min", "the number: %v, should be greater than min: %v"),
-	"int-max":     newGorifyErr("int", "max", "the number: %v, should be lower than max: %v"),
+	"int-between": newGorifyErr("int", "between", "given number: %v, should between min: %v, max: %v"),
+	"int-min":     newGorifyErr("int", "min", "given number: %v, should be greater than min: %v"),
+	"int-max":     newGorifyErr("int", "max", "given number: %v, should be lower than max: %v"),
 
-	"int64-between": newGorifyErr("int64", "between", "the number: %v, should between min: %v, max: %v"),
-	"int64-min":     newGorifyErr("int64", "min", "the number: %v, should be greater than min: %v"),
-	"int64-max":     newGorifyErr("int64", "max", "the number: %v, should be lower than max: %v"),
+	"int64-between": newGorifyErr("int64", "between", "given number: %v, should between min: %v, max: %v"),
+	"int64-min":     newGorifyErr("int64", "min", "given number: %v, should be greater than min: %v"),
+	"int64-max":     newGorifyErr("int64", "max", "given number: %v, should be lower than max: %v"),
 
-	"string-blank":    newGorifyErr("string", "blank", ""),
-	"string-pattern":  newGorifyErr("string", "pattern", ""),
-	"string-email":    newGorifyErr("string", "email", ""),
-	"string-contains": newGorifyErr("string", "contains", ""),
-	"string-between":  newGorifyErr("string", "between", ""),
-	"string-min":      newGorifyErr("string", "min", ""),
-	"string-max":      newGorifyErr("string", "max", ""),
-	"string-size":     newGorifyErr("string", "max", ""),
+	"string-blank":    newGorifyErr("string", "blank", "given string should not be blank"),
+	"string-pattern":  newGorifyErr("string", "pattern", "given string did not match with the regexp pattern"),
+	"string-email":    newGorifyErr("string", "email", "given string is not an email"),
+	"string-contains": newGorifyErr("string", "contains", "given string %v, does not contain %v"),
+	"string-between":  newGorifyErr("string", "between", "given string length should between min: %d, max: %d"),
+	"string-min":      newGorifyErr("string", "min", "given string length should be greater than min: %d"),
+	"string-max":      newGorifyErr("string", "max", "given string length should be smaller than max: %d"),
+	"string-size":     newGorifyErr("string", "max", "given string size should be equal to size: %d"),
 
-	"time-between": newGorifyErr("time", "between", ""),
-	"time-after":   newGorifyErr("time", "after", ""),
-	"time-before":  newGorifyErr("time", "before", ""),
+	"time-between": newGorifyErr("time", "between", "given time should between %v and %v"),
+	"time-after":   newGorifyErr("time", "after", "given time should before %v"),
+	"time-before":  newGorifyErr("time", "before", "given time should after %v"),
 }
 
 type GorifyErr struct {
